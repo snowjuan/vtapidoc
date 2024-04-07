@@ -216,6 +216,35 @@ paths:
                 $ref: '#/components/schemas/AnalysisReport'
         '404':
           description: File not found
+  /getprogress:
+    get:
+      summary: Get progress for a file scanning jobs
+      parameters:
+        - in: query
+          name: FileID
+          schema:
+            type: string
+          required: true
+          description: ID of the file to check progress for
+      responses:
+        '200':
+          description: Progress information for the file scanning jobs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  AVG:
+                    type: string
+                  status:
+                    type: string
+                    description: The current status of the file scan
+                  ClamAV:
+                    type: string
+                    description: The result of the ClamAV scan
+                  eScan:
+                    type: string
+                    description: The result of the eScan scan
   /files/{id}/download:
     get:
       summary: Download a file
@@ -283,6 +312,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AnalysisResult'
+        behaviors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Behavior'
       example:
         id: "12345"
         name: "example.exe"
@@ -306,6 +339,10 @@ components:
             is_malware: true
             is_signature_valid: false
             signature_algorithm: "MD5"
+        behaviors:
+          - connection: "hacker.cc"
+            copyfile: true
+            deletefile: "['sys.ini', 'win.exe']"
     AnalysisResult:
       type: object
       properties:
@@ -325,7 +362,19 @@ components:
         is_malware: false
         is_signature_valid: true
         signature_algorithm: "SHA256"
-
+    Behavior:
+      type: object
+      properties:
+        connection: 
+          type: string
+        copyfile:
+          type: boolean
+        deletefile:
+          type: string
+      example:
+        connection: "hacker.cc"
+        copyfile: true
+        deletefile: "['sys.ini', 'win.exe']"
     File:
       type: object
       properties:
@@ -373,6 +422,16 @@ components:
               field2:
                 type: string
             description: Analysis results for the file.
+        Behaviors:
+          type: array
+          items:
+            type: object
+            properties:
+              field1:
+                type: string
+              field2:
+                type: string
+            description: Behavior of file.
       example:
         FileID: "1"
         MD5: "md5hash"
@@ -385,6 +444,7 @@ components:
         Is_Malware: false
         MalWare_Type: "malwaretype"
         Analyse: [{"field1": "value1", "field2": "value2"}]
+        Behaviors: [{"connection": "hacker.cc", "makecopies": "yes", "deletefiles":["win32.exe","sys.ini"]}]
 
           
     

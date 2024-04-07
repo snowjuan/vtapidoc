@@ -245,6 +245,11 @@ paths:
                   eScan:
                     type: string
                     description: The result of the eScan scan
+              example:
+                AVG: "2 minutes"
+                status: "in queue"
+                ClamAV: "Undetected"
+                eScan: "Undetected"
   /files/{id}/download:
     get:
       summary: Download a file

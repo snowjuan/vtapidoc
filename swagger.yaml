@@ -16,6 +16,10 @@ paths:
             schema:
               type: object
               properties:
+                firstname: 
+                  type: string
+                lastname:
+                  type: string
                 username:
                   type: string
                 password:
@@ -50,6 +54,59 @@ paths:
                 $ref: '#/components/schemas/User'
         '401':
           description: Unauthorized, invalid username or password
+  /user:
+    put:
+      summary: Update user information
+      security:
+        - bearerAuth: []
+      description: Update user information based on the provided data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: User information updated successfully
+        '401':
+          description: Unauthorized, missing or invalid token
+        '403':
+          description: Forbidden, user does not have permission to perform this action
+  /user/{username}:
+    delete:
+      summary: Delete user
+      security:
+        - bearerAuth: []
+      description: Delete a user based on the provided username
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: Username of the user to be deleted
+      responses:
+        '200':
+          description: User deleted successfully
+        '401':
+          description: Unauthorized, missing or invalid token
+        '403':
+          description: Forbidden, user does not have permission to perform this action
+
   /token:
     post:
       summary: Get JWT token
@@ -65,8 +122,6 @@ paths:
                 username:
                   type: string
                 password:
-                  type: string
-                apikey:
                   type: string
       responses:
         '200':
@@ -287,6 +342,10 @@ components:
     User:
       type: object
       properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
         username:
           type: string
         email:

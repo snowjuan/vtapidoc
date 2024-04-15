@@ -530,7 +530,7 @@ components:
               field2:
                 type: string
           description: Behavior of file.
-    Scan:
+    ScanRequest:
       type: object
       properties:
         id:
@@ -551,5 +551,5 @@ components:
           description: The ID of the session associated with the upload.
         jobstatus:
           type: string
-          description: are jobs created, in progress or completed.
+          description: use to track scanrequest, include file upload, jobs created, scanning in progress and scanning completed.
   

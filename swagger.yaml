@@ -530,7 +530,7 @@ components:
               field2:
                 type: string
           description: Behavior of file.
-    Upload:
+    Scan:
       type: object
       properties:
         id:

@@ -194,32 +194,7 @@ paths:
           description: Bad request, check your request parameters
         '401':
           description: Unauthorized, invalid apikey or JWT token
-  /files/{id}/download_url:
-    get:
-      summary: Get file download URL
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the file
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  download_url:
-                    type: string
-                example:
-                  download_url: {
-                      "data": "https://vtsamples.commondatastorage.apis.com/275a..fd0?AccessId=758681729565-rc7fcckv235v1@developer.serviceaccount.com&Expires=1524733537&Signature=GRs9WLyoHA%3D"
-                  }
-        '404':
-          description: File not found
+  
   /files/{id}/report:
     get:
       summary: Get report for a file
@@ -375,7 +350,7 @@ components:
         analysis:
           type: array
           items:
-            $ref: '#/components/schemas/AnalysisResult'
+            $ref: '#/components/schemas/AVResult'
         behaviors:
           type: array
           items:
@@ -407,7 +382,7 @@ components:
           - connection: "hacker.cc"
             copyfile: true
             deletefile: "['sys.ini', 'win.exe']"
-    AnalysisResult:
+    AVResult:
       type: object
       properties:
         vendor:
@@ -509,6 +484,72 @@ components:
         MalWare_Type: "malwaretype"
         Analyse: [{"field1": "value1", "field2": "value2"}]
         Behaviors: [{"connection": "hacker.cc", "makecopies": "yes", "deletefiles":["win32.exe","sys.ini"]}]
-
-          
-    
+    Job:
+      type: object
+      properties:
+        jobid:
+          type: string
+          description: The ID of the job.
+        fileid:
+          type: string
+          description: The ID of the file associated with the job.
+        userid:
+          type: string
+          description: The ID of the user who initiated the job.
+        sessionid:
+          type: string
+          description: The ID of the session associated with the job.
+        jobtype:
+          type: string
+          description: The type of job.
+        sandbox_type:
+          type: string
+          description: The type of sandbox used for the job.
+        result:
+          type: string
+          description: The result of the job.
+    Sandbox:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the sandbox.
+        os:
+          type: string
+          description: The different OS support
+        vendor:
+          type: string
+          description: The vendor of the sandbox.
+        behaviors:
+          type: array
+          items:
+            type: object
+            properties:
+              field1:
+                type: string
+              field2:
+                type: string
+          description: Behavior of file.
+    Upload:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the upload.
+        fileid:
+          type: string
+          description: The ID of the file associated with the upload.
+        createdat:
+          type: string
+          format: date-time
+          description: The timestamp when the upload was created.
+        userid:
+          type: string
+          description: The ID of the user who uploaded the file.
+        sessionid:
+          type: string
+          description: The ID of the session associated with the upload.
+        jobstatus:
+          type: string
+          description: are jobs created, in progress or completed.
+  
